@@ -70,7 +70,15 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_GALERY){
-            Imagen.setImageURI(data?.data)
+           //Imagen.setImageURI(data?.data)
+            Toast.makeText(applicationContext," " + data?.data,Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, MainActivity2::class.java).apply {
+                putExtra("image",data?.data.toString())
+            }
+            //val b : Bundle = Bundle()
+           // b.putString("img",data?.data.toString())
+            //cambio.putExtras(b)
+            startActivity(intent)
         }
     }
 }
