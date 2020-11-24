@@ -13,6 +13,11 @@
         tools:layout_editor_absoluteX="241dp"
         tools:layout_editor_absoluteY="507dp">
 
+        <com.example.examenfinal.MenuClass
+            android:id="@+id/ctlMenu"
+            android:layout_width="match_parent"
+            android:layout_height="137dp" />
+
         <ImageView
             android:id="@+id/fotografia"
             android:layout_width="match_parent"

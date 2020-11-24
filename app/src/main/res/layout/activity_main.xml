@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,7 +23,6 @@
             android:text="EXAMEN FINAL"
             android:textSize="24sp"
             android:textStyle="bold" />
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
         <ImageView
             android:id="@+id/imagen"
             android:layout_width="match_parent"
-            android:layout_height="354dp"
+            android:layout_height="355dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:src="@drawable/noimagen" />
@@ -49,6 +49,7 @@
             android:layout_marginTop="10dp"
             android:text="SELECCIONAR IMAGEN"
             app:backgroundTint="#FF5722" />
+
 
     </LinearLayout>
 
