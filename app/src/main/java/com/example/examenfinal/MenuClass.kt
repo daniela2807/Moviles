@@ -25,7 +25,7 @@ class MenuClass : LinearLayout {
     fun inicializar(){
         val li = LayoutInflater.from(context)
         li.inflate(R.layout.menu_eleccion, this, true)
-        txtFiltro = findViewById(R.id.txtFiltro)
+        txtFiltro = findViewById(R.id.txtElige)
 
         //Spinner para la lista de filtros básicos
         val filtrosB = resources.getStringArray(R.array.Fbasicos)

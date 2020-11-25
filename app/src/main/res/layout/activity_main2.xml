@@ -16,19 +16,13 @@
         <com.example.examenfinal.MenuClass
             android:id="@+id/ctlMenu"
             android:layout_width="match_parent"
-            android:layout_height="137dp" />
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/fotografia"
             android:layout_width="match_parent"
-            android:layout_height="667dp"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_launcher_background" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="87dp"
-            android:text="Sepia" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
