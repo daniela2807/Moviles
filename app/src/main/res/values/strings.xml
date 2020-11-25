@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">ExamenFinal</string>
+    <string-array name="Fbasicos">
+        <item>Filtros Basicos</item>
+        <item>Negativo</item>
+        <item>Escala de Grises</item>
+        <item>Brillo</item>
+        <item>Contraste</item>
+        <item>Gamma</item>
+        <item>Separacion de Canales</item>
+    </string-array>
+    
+    <string-array name="Fconvolucion">
+        <item>Filtros de Convolucion</item>
+        <item>Smoothing</item>
+        <item>Gaussian Blur</item>
+        <item>Sharpen</item>
+        <item>Mean Removal</item>
+        <item>Embossing</item>
+        <item>Edge Detection</item>
+    </string-array>
+
+    <string-array name="Fotros">
+        <item>Otros</item>
+        <item>filtro 1</item>
+        <item>filtro 2</item>
+        <item>filtro 3</item>
+        <item>filtro 4</item>
+        <item>filtro 5</item>
+    </string-array>
 </resources>
