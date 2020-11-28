@@ -40,8 +40,13 @@ class MainActivity2 : AppCompatActivity() {
                     if (filtroSeleccionado != "Filtros Basicos") {
                         when(filtroSeleccionado) {
                             "Negativo" -> cambio = Negativo(bitmap)
+                            "Escala de Grises" -> cambio = Grises(bitmap)
+                            else-> {
+                                cambio = bitmap
+                            }
                         }
                         fotografia.setImageBitmap(cambio)
+
                     }
                 }
 
@@ -76,6 +81,37 @@ class MainActivity2 : AppCompatActivity() {
                 G = 255- Color.green(pixel)
                 B = 255- Color.blue(pixel)
 
+                bmOut.setPixel(x, y, Color.rgb( R, G, B))
+            }
+        }
+        src.recycle()
+        return bmOut
+    }
+
+    private  fun Grises(src: Bitmap): Bitmap {
+        val bmOut = Bitmap.createBitmap(src.width, src.height, src.config)
+
+        var GS_RED = 0.299;
+        var GS_GREEN = 0.587;
+        var GS_BLUE = 0.114;
+        var R: Int
+        var G: Int
+        var B: Int
+        var pixel: Int
+
+        // scan through all pixels
+        for (x in 0 until src.width) {
+            for (y in 0 until src.height) {
+                // get pixel color
+                pixel = src.getPixel(x, y)
+                // get color on each channel
+                R = Color.red(pixel)
+                G = Color.green(pixel)
+                B = Color.blue(pixel)
+
+                B = (GS_RED * R + GS_GREEN * G + GS_BLUE * B).toInt();
+                G= B
+                R= G
                 bmOut.setPixel(x, y, Color.rgb( R, G, B))
             }
         }
