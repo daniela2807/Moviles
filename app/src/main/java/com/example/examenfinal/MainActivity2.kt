@@ -4,17 +4,20 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Toast
+import android.text.TextWatcher
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.core.widget.addTextChangedListener
 
 
 class MainActivity2 : AppCompatActivity() {
 
     lateinit var fotografia: ImageView
     lateinit var bitmap: Bitmap
+    lateinit var cambio: Bitmap
+    lateinit var spinner1 : Spinner
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
@@ -22,29 +25,42 @@ class MainActivity2 : AppCompatActivity() {
         val image = intent.getStringExtra("image")
         Toast.makeText(applicationContext, " " + image, Toast.LENGTH_SHORT).show()
         fotografia = findViewById(R.id.fotografia)
+        spinner1 = findViewById(R.id.idBasicos)
+        val filtrosB = resources.getStringArray(R.array.Fbasicos)
        // fotografia2 = findViewById(R.id.fotografia2)
         if (image != null) {
             fotografia.setImageURI(image.toUri())
             bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
             fotografia.setImageBitmap(bitmap)
         }
+
+        spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                    var filtroSeleccionado = filtrosB[position]
+                    if (filtroSeleccionado != "Filtros Basicos") {
+                        when(filtroSeleccionado) {
+                            "Negativo" -> cambio = Negativo(bitmap)
+                        }
+                        fotografia.setImageBitmap(cambio)
+                    }
+                }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
         //efecto()
     }
 
-    /*private fun efecto(){
+    private fun efecto(){
         //sepia.setOnClickListener(){
-            var cambio = grayscale(bitmap)
+            var cambio = Negativo(bitmap)
             fotografia.setImageBitmap(cambio)
         }
-    }
-    fun grayscale(src: Bitmap): Bitmap {
+   private  fun Negativo(src: Bitmap): Bitmap {
         val bmOut = Bitmap.createBitmap(src.width, src.height, src.config)
-        // constant grayscale
-        val GS_RED = 0.299
-        val GS_GREEN = 0.587
-        val GS_BLUE = 0.114
-        // color information
-        var A: Int
+
         var R: Int
         var G: Int
         var B: Int
@@ -56,34 +72,14 @@ class MainActivity2 : AppCompatActivity() {
                 // get pixel color
                 pixel = src.getPixel(x, y)
                 // get color on each channel
-                A = Color.alpha(pixel)
-                R = Color.red(pixel)
-                G = Color.green(pixel)
-                B = Color.blue(pixel)
-                // apply grayscale sample
-                R = (GS_RED * R + GS_GREEN * G + GS_BLUE * B).toInt()
-                G = R
-                B = G
+                R = 255 - Color.red(pixel)
+                G = 255- Color.green(pixel)
+                B = 255- Color.blue(pixel)
 
-                // apply intensity level for sepid-toning on each channel
-                R += 110
-                if (R > 255) {
-                    R = 255
-                }
-                G += 65
-                if (G > 255) {
-                    G = 255
-                }
-                B += 20
-                if (B > 255) {
-                    B = 255
-                }
-
-                // set new pixel color to output image
-                bmOut.setPixel(x, y, Color.argb(A, R, G, B))
+                bmOut.setPixel(x, y, Color.rgb( R, G, B))
             }
         }
         src.recycle()
         return bmOut
-    }*/
+    }
 }
