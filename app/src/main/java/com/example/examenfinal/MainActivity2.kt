@@ -30,14 +30,21 @@ class MainActivity2 : AppCompatActivity() {
        // fotografia2 = findViewById(R.id.fotografia2)
         if (image != null) {
             fotografia.setImageURI(image.toUri())
-            bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
-            fotografia.setImageBitmap(bitmap)
+            //bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
+            //fotografia.setImageBitmap(bitmap)
         }
 
         spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     var filtroSeleccionado = filtrosB[position]
+
                     if (filtroSeleccionado != "Filtros Basicos") {
+                        if (image != null) {
+                            fotografia.setImageURI(image.toUri())
+                            //bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
+                            //fotografia.setImageBitmap(bitmap)
+                        }
+                        bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                         when(filtroSeleccionado) {
                             "Negativo" -> cambio = Negativo(bitmap)
                             "Escala de Grises" -> cambio = Grises(bitmap)
@@ -46,7 +53,6 @@ class MainActivity2 : AppCompatActivity() {
                             }
                         }
                         fotografia.setImageBitmap(cambio)
-
                     }
                 }
 
