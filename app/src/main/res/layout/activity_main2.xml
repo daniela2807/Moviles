@@ -21,8 +21,27 @@
         <ImageView
             android:id="@+id/fotografia"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="584dp"
             android:src="@drawable/ic_launcher_background" />
+        <LinearLayout
+            android:id="@+id/PanelBrillo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:text="Nivel de Brillo (-50,50)"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/Brillo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberSigned" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

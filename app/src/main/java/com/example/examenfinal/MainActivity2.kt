@@ -9,7 +9,9 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import java.lang.Integer.parseInt
 
 
 class MainActivity2 : AppCompatActivity() {
@@ -18,6 +20,7 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var bitmap: Bitmap
     lateinit var cambio: Bitmap
     lateinit var spinner1 : Spinner
+    lateinit var brillo : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
@@ -26,6 +29,7 @@ class MainActivity2 : AppCompatActivity() {
         Toast.makeText(applicationContext, " " + image, Toast.LENGTH_SHORT).show()
         fotografia = findViewById(R.id.fotografia)
         spinner1 = findViewById(R.id.idBasicos)
+        brillo = findViewById(R.id.Brillo)
         val filtrosB = resources.getStringArray(R.array.Fbasicos)
        // fotografia2 = findViewById(R.id.fotografia2)
         if (image != null) {
@@ -48,6 +52,13 @@ class MainActivity2 : AppCompatActivity() {
                         when(filtroSeleccionado) {
                             "Negativo" -> cambio = Negativo(bitmap)
                             "Escala de Grises" -> cambio = Grises(bitmap)
+                            "Brillo" -> {
+                                if(brillo.text != null){
+                                    cambio = Brillo(bitmap,parseInt(brillo.text.toString()))
+                                }else{
+                                    cambio = Brillo(bitmap,50)
+                                }
+                            }
                             else-> {
                                 cambio = bitmap
                             }
@@ -61,14 +72,9 @@ class MainActivity2 : AppCompatActivity() {
             }
         }
 
-        //efecto()
     }
 
-    private fun efecto(){
-        //sepia.setOnClickListener(){
-            var cambio = Negativo(bitmap)
-            fotografia.setImageBitmap(cambio)
-        }
+
    private  fun Negativo(src: Bitmap): Bitmap {
         val bmOut = Bitmap.createBitmap(src.width, src.height, src.config)
 
@@ -86,6 +92,42 @@ class MainActivity2 : AppCompatActivity() {
                 R = 255 - Color.red(pixel)
                 G = 255- Color.green(pixel)
                 B = 255- Color.blue(pixel)
+
+                bmOut.setPixel(x, y, Color.rgb( R, G, B))
+            }
+        }
+        src.recycle()
+        return bmOut
+    }
+
+    private  fun Brillo(src: Bitmap, num: Int): Bitmap {
+        val bmOut = Bitmap.createBitmap(src.width, src.height, src.config)
+
+        var R: Int
+        var G: Int
+        var B: Int
+        var pixel: Int
+
+        // scan through all pixels
+        for (x in 0 until src.width) {
+            for (y in 0 until src.height) {
+                // get pixel color
+                pixel = src.getPixel(x, y)
+                R = Color.red(pixel)
+                G =Color.green(pixel)
+                B = Color.blue(pixel)
+
+                R += num;
+                if(R > 255) { R = 255; }
+                else if(R < 0) { R = 0; }
+
+                G += num;
+                if(G > 255) { G = 255; }
+                else if(G < 0) { G = 0; }
+
+                B += num;
+                if(B > 255) { B = 255; }
+                else if(B < 0) { B = 0; }
 
                 bmOut.setPixel(x, y, Color.rgb( R, G, B))
             }
