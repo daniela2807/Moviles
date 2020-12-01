@@ -4,13 +4,12 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import java.lang.Integer.parseInt
 
 
@@ -21,6 +20,7 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var cambio: Bitmap
     lateinit var spinner1 : Spinner
     lateinit var brillo : TextView
+    lateinit var contentBrillo : LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
@@ -30,6 +30,7 @@ class MainActivity2 : AppCompatActivity() {
         fotografia = findViewById(R.id.fotografia)
         spinner1 = findViewById(R.id.idBasicos)
         brillo = findViewById(R.id.Brillo)
+        contentBrillo = findViewById(R.id.PanelBrillo)
         val filtrosB = resources.getStringArray(R.array.Fbasicos)
        // fotografia2 = findViewById(R.id.fotografia2)
         if (image != null) {
@@ -41,7 +42,7 @@ class MainActivity2 : AppCompatActivity() {
         spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     var filtroSeleccionado = filtrosB[position]
-
+                    contentBrillo.isVisible = false;
                     if (filtroSeleccionado != "Filtros Basicos") {
                         if (image != null) {
                             fotografia.setImageURI(image.toUri())
@@ -53,16 +54,14 @@ class MainActivity2 : AppCompatActivity() {
                             "Negativo" -> cambio = Negativo(bitmap)
                             "Escala de Grises" -> cambio = Grises(bitmap)
                             "Brillo" -> {
-                                if(brillo.text != null){
-                                    cambio = Brillo(bitmap,parseInt(brillo.text.toString()))
-                                }else{
-                                    cambio = Brillo(bitmap,50)
-                                }
+                                contentBrillo.isVisible = true;
+                                cambio = bitmap
                             }
                             else-> {
                                 cambio = bitmap
                             }
                         }
+                        //contentBrillo.isVisible = false;
                         fotografia.setImageBitmap(cambio)
                     }
                 }
@@ -71,6 +70,20 @@ class MainActivity2 : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         }
+
+        brillo.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                //Perform Code
+                bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
+                if (brillo.text != null) {
+                    cambio = Brillo(bitmap, parseInt(brillo.text.toString()))
+                } else {
+                    cambio = Brillo(bitmap, 50)
+                }
+                fotografia.setImageBitmap(cambio)
+            }
+            false
+        })
 
     }
 
@@ -93,7 +106,7 @@ class MainActivity2 : AppCompatActivity() {
                 G = 255- Color.green(pixel)
                 B = 255- Color.blue(pixel)
 
-                bmOut.setPixel(x, y, Color.rgb( R, G, B))
+                bmOut.setPixel(x, y, Color.rgb(R, G, B))
             }
         }
         src.recycle()
@@ -129,7 +142,7 @@ class MainActivity2 : AppCompatActivity() {
                 if(B > 255) { B = 255; }
                 else if(B < 0) { B = 0; }
 
-                bmOut.setPixel(x, y, Color.rgb( R, G, B))
+                bmOut.setPixel(x, y, Color.rgb(R, G, B))
             }
         }
         src.recycle()
@@ -160,7 +173,7 @@ class MainActivity2 : AppCompatActivity() {
                 B = (GS_RED * R + GS_GREEN * G + GS_BLUE * B).toInt();
                 G= B
                 R= G
-                bmOut.setPixel(x, y, Color.rgb( R, G, B))
+                bmOut.setPixel(x, y, Color.rgb(R, G, B))
             }
         }
         src.recycle()
