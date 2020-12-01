@@ -77,5 +77,41 @@
                 android:ems="10"
                 android:inputType="numberDecimal" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/PanelFiltro"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:text="Selecciona "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RadioGroup
+                android:id = "@+id/Filtro"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/Rojo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rojo " />
+
+                <RadioButton
+                    android:id="@+id/Verde"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Verde " />
+
+                <RadioButton
+                    android:id="@+id/Azul"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Azul " />
+            </RadioGroup>
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

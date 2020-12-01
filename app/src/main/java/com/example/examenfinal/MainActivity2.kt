@@ -22,21 +22,26 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var brillo : TextView
     lateinit var gamma : TextView
     lateinit var Contraste : TextView
+    lateinit var filtro: RadioGroup
     lateinit var contentBrillo : LinearLayout
     lateinit var contentContraste : LinearLayout
     lateinit var contentGamma : LinearLayout
+    lateinit var contentFiltro : LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
+        filtro.clearCheck()
         val image = intent.getStringExtra("image")
         Toast.makeText(applicationContext, " " + image, Toast.LENGTH_SHORT).show()
         fotografia = findViewById(R.id.fotografia)
         spinner1 = findViewById(R.id.idBasicos)
         brillo = findViewById(R.id.Brillo)
         Contraste = findViewById(R.id.Contraste)
+        filtro = findViewById(R.id.Filtro)
         gamma = findViewById(R.id.Gamma)
         contentBrillo = findViewById(R.id.PanelBrillo)
+        contentFiltro = findViewById(R.id.PanelFiltro)
         contentContraste = findViewById(R.id.PanelContraste)
         contentGamma = findViewById(R.id.PanelGamma)
         val filtrosB = resources.getStringArray(R.array.Fbasicos)
@@ -50,6 +55,7 @@ class MainActivity2 : AppCompatActivity() {
         spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     var filtroSeleccionado = filtrosB[position]
+                    contentFiltro.isVisible = false;
                     contentGamma.isVisible = false;
                     contentBrillo.isVisible = false;
                     contentContraste.isVisible = false;
@@ -73,6 +79,10 @@ class MainActivity2 : AppCompatActivity() {
                             }
                             "Gamma" -> {
                                 contentGamma.isVisible = true
+                                cambio = bitmap
+                            }
+                            "Separacion de Canales" -> {
+                                contentFiltro.isVisible = true
                                 cambio = bitmap
                             }
                             else-> {
@@ -134,6 +144,17 @@ class MainActivity2 : AppCompatActivity() {
             false
         })
 
+        filtro.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+            bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
+            if(i == R.id.Rojo){
+                cambio = Filtro(bitmap,1)
+            }else if(i == R.id.Verde){
+                cambio = Filtro(bitmap,2)
+            }else {
+                cambio = Filtro(bitmap,3)
+            }
+            fotografia.setImageBitmap(cambio)
+        })
     }
 
 
@@ -198,8 +219,44 @@ class MainActivity2 : AppCompatActivity() {
         return bmOut
     }
 
+    private  fun Filtro(src: Bitmap, num: Int): Bitmap {
+        val bmOut = Bitmap.createBitmap(src.width, src.height, src.config)
+
+        var R: Int
+        var G: Int
+        var B: Int
+        var pixel: Int
+
+        // scan through all pixels
+        for (x in 0 until src.width) {
+            for (y in 0 until src.height) {
+                // get pixel color
+                pixel = src.getPixel(x, y)
+                R = Color.red(pixel)
+                G =Color.green(pixel)
+                B = Color.blue(pixel)
+
+                if(num == 1){
+                    G = -255
+                    B = -255
+                    bmOut.setPixel(x, y, Color.rgb(R, G, B))
+                }else if (num == 2){
+                    R = -255
+                    B = -255
+                    bmOut.setPixel(x, y, Color.rgb(R, G, B))
+                }else{
+                    R = -255
+                    G = -255
+                    bmOut.setPixel(x, y, Color.rgb(R, G, B))
+                }
+            }
+        }
+        src.recycle()
+        return bmOut
+    }
+
     private fun Gamma(src: Bitmap, num: Double): Bitmap {
-        
+
         val bmOut = Bitmap.createBitmap(src.width, src.height, src.config)
 
         val MAX_SIZE = 256;
