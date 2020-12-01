@@ -20,9 +20,11 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var cambio: Bitmap
     lateinit var spinner1 : Spinner
     lateinit var brillo : TextView
+    lateinit var gamma : TextView
     lateinit var Contraste : TextView
     lateinit var contentBrillo : LinearLayout
     lateinit var contentContraste : LinearLayout
+    lateinit var contentGamma : LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
@@ -33,8 +35,10 @@ class MainActivity2 : AppCompatActivity() {
         spinner1 = findViewById(R.id.idBasicos)
         brillo = findViewById(R.id.Brillo)
         Contraste = findViewById(R.id.Contraste)
+        gamma = findViewById(R.id.Gamma)
         contentBrillo = findViewById(R.id.PanelBrillo)
         contentContraste = findViewById(R.id.PanelContraste)
+        contentGamma = findViewById(R.id.PanelGamma)
         val filtrosB = resources.getStringArray(R.array.Fbasicos)
        // fotografia2 = findViewById(R.id.fotografia2)
         if (image != null) {
@@ -46,6 +50,7 @@ class MainActivity2 : AppCompatActivity() {
         spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     var filtroSeleccionado = filtrosB[position]
+                    contentGamma.isVisible = false;
                     contentBrillo.isVisible = false;
                     contentContraste.isVisible = false;
                     if (filtroSeleccionado != "Filtros Basicos") {
@@ -59,11 +64,15 @@ class MainActivity2 : AppCompatActivity() {
                             "Negativo" -> cambio = Negativo(bitmap)
                             "Escala de Grises" -> cambio = Grises(bitmap)
                             "Brillo" -> {
-                                contentBrillo.isVisible = true;
+                                contentBrillo.isVisible = true
                                 cambio = bitmap
                             }
                             "Contraste" -> {
-                                contentContraste.isVisible = true;
+                                contentContraste.isVisible = true
+                                cambio = bitmap
+                            }
+                            "Gamma" -> {
+                                contentGamma.isVisible = true
                                 cambio = bitmap
                             }
                             else-> {
@@ -104,6 +113,21 @@ class MainActivity2 : AppCompatActivity() {
                 } else {
                     //Default
                     cambio = Contraste(bitmap, 50)
+                }
+                fotografia.setImageBitmap(cambio)
+            }
+            false
+        })
+
+        gamma.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                //Perform Code
+                bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
+                if (gamma.text != null) {
+                    cambio = Gamma(bitmap, (gamma.text.toString()).toDouble())
+                } else {
+                    //Default
+                    cambio = Gamma(bitmap, 5.0)
                 }
                 fotografia.setImageBitmap(cambio)
             }
@@ -166,6 +190,49 @@ class MainActivity2 : AppCompatActivity() {
                 B += num;
                 if(B > 255) { B = 255; }
                 else if(B < 0) { B = 0; }
+
+                bmOut.setPixel(x, y, Color.rgb(R, G, B))
+            }
+        }
+        src.recycle()
+        return bmOut
+    }
+
+    private fun Gamma(src: Bitmap, num: Double): Bitmap {
+        
+        val bmOut = Bitmap.createBitmap(src.width, src.height, src.config)
+
+        val MAX_SIZE = 256;
+        val MAX_VALUE_DBL = 255.0;
+        val  MAX_VALUE_INT = 255;
+        val REVERSE = 1.0;
+
+        val gammaR = IntArray(MAX_SIZE)
+        val gammaG = IntArray(MAX_SIZE)
+        val gammaB = IntArray(MAX_SIZE)
+
+        for (i in 0 until MAX_SIZE) {
+            gammaR[i] = Math.min(MAX_VALUE_INT,
+                    (MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE / num) + 0.5).toInt())
+            gammaG[i] = Math.min(MAX_VALUE_INT,
+                    (MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE / num) + 0.5).toInt())
+            gammaB[i] = Math.min(MAX_VALUE_INT,
+                    (MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE / num) + 0.5).toInt())
+        }
+
+        var R: Int
+        var G: Int
+        var B: Int
+        var pixel: Int
+
+        // scan through all pixels
+        for (x in 0 until src.width) {
+            for (y in 0 until src.height) {
+                // get pixel color
+                pixel = src.getPixel(x, y)
+                R = gammaR[Color.red(pixel)];
+                G = gammaG[Color.green(pixel)];
+                B = gammaB[Color.blue(pixel)];
 
                 bmOut.setPixel(x, y, Color.rgb(R, G, B))
             }

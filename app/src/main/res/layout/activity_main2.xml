@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
         <TextView
-            android:text="Nivel de Brillo (-255,255)"
+            android:text="Nivel de Brillo [-255,255]"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
-                android:text="Nivel de Contraste (-100,100)"
+                android:text="Nivel de Contraste [-100,100]: "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -59,8 +59,23 @@
                 android:ems="10"
                 android:inputType="numberSigned" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/PanelGamma"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:text="Nivel de Gamma [0,48]: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-
-
+            <EditText
+                android:id="@+id/Gamma"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
