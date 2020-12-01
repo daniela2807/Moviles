@@ -1,5 +1,6 @@
 package com.example.examenfinal
 
+import android.R.attr
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
@@ -19,6 +20,7 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var bitmap: Bitmap
     lateinit var cambio: Bitmap
     lateinit var spinner1 : Spinner
+    lateinit var spinner2: Spinner
     lateinit var brillo : TextView
     lateinit var gamma : TextView
     lateinit var Contraste : TextView
@@ -36,6 +38,7 @@ class MainActivity2 : AppCompatActivity() {
         Toast.makeText(applicationContext, " " + image, Toast.LENGTH_SHORT).show()
         fotografia = findViewById(R.id.fotografia)
         spinner1 = findViewById(R.id.idBasicos)
+        spinner2 = findViewById(R.id.idConvolucion)
         brillo = findViewById(R.id.Brillo)
         Contraste = findViewById(R.id.Contraste)
         filtro = findViewById(R.id.Filtro)
@@ -45,6 +48,7 @@ class MainActivity2 : AppCompatActivity() {
         contentContraste = findViewById(R.id.PanelContraste)
         contentGamma = findViewById(R.id.PanelGamma)
         val filtrosB = resources.getStringArray(R.array.Fbasicos)
+        val filtrosC = resources.getStringArray(R.array.Fconvolucion)
        // fotografia2 = findViewById(R.id.fotografia2)
         if (image != null) {
             fotografia.setImageURI(image.toUri())
@@ -99,6 +103,32 @@ class MainActivity2 : AppCompatActivity() {
             }
         }
 
+        spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                var filtroSeleccionado = filtrosC[position]
+                if (filtroSeleccionado != "Filtros de Convolucion") {
+                    if (image != null) {
+                        fotografia.setImageURI(image.toUri())
+                        //bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
+                        //fotografia.setImageBitmap(bitmap)
+                    }
+                    bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
+                    when(filtroSeleccionado) {
+                        "Gaussian Blur" -> cambio = GaussianBlur(bitmap)
+                        else-> {
+                            cambio = bitmap
+                        }
+                    }
+                    //contentBrillo.isVisible = false;
+                    fotografia.setImageBitmap(cambio)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
         brillo.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
@@ -146,12 +176,12 @@ class MainActivity2 : AppCompatActivity() {
 
         filtro.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
             bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
-            if(i == R.id.Rojo){
-                cambio = Filtro(bitmap,1)
-            }else if(i == R.id.Verde){
-                cambio = Filtro(bitmap,2)
-            }else {
-                cambio = Filtro(bitmap,3)
+            if (i == R.id.Rojo) {
+                cambio = Filtro(bitmap, 1)
+            } else if (i == R.id.Verde) {
+                cambio = Filtro(bitmap, 2)
+            } else {
+                cambio = Filtro(bitmap, 3)
             }
             fotografia.setImageBitmap(cambio)
         })
@@ -363,5 +393,27 @@ class MainActivity2 : AppCompatActivity() {
         }
         src.recycle()
         return bmOut
+    }
+
+    private  fun GaussianBlur(src: Bitmap): Bitmap {
+        val GaussianBlurConfig = Array(3, {DoubleArray(3)})
+        GaussianBlurConfig[0][0]=1.0
+        GaussianBlurConfig[0][1]=2.0
+        GaussianBlurConfig[0][2]=1.0
+        //
+        GaussianBlurConfig[1][0]=2.0
+        GaussianBlurConfig[1][1]=4.0
+        GaussianBlurConfig[1][2]=2.0
+        //
+        GaussianBlurConfig[2][0]=1.0
+        GaussianBlurConfig[2][1]=2.0
+        GaussianBlurConfig[2][2]=1.0
+
+        val convMatrix = MatrizConvolucion()
+        convMatrix.ConvolutionMatrix(3)
+        convMatrix.applyConfig(GaussianBlurConfig)
+        convMatrix.Factor = 16
+        convMatrix.Offset = 0
+        return MatrizConvolucion().computeConvolution3x3(src, convMatrix)
     }
 }
