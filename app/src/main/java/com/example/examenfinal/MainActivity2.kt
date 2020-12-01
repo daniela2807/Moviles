@@ -20,7 +20,9 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var cambio: Bitmap
     lateinit var spinner1 : Spinner
     lateinit var brillo : TextView
+    lateinit var Contraste : TextView
     lateinit var contentBrillo : LinearLayout
+    lateinit var contentContraste : LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
@@ -30,7 +32,9 @@ class MainActivity2 : AppCompatActivity() {
         fotografia = findViewById(R.id.fotografia)
         spinner1 = findViewById(R.id.idBasicos)
         brillo = findViewById(R.id.Brillo)
+        Contraste = findViewById(R.id.Contraste)
         contentBrillo = findViewById(R.id.PanelBrillo)
+        contentContraste = findViewById(R.id.PanelContraste)
         val filtrosB = resources.getStringArray(R.array.Fbasicos)
        // fotografia2 = findViewById(R.id.fotografia2)
         if (image != null) {
@@ -43,6 +47,7 @@ class MainActivity2 : AppCompatActivity() {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     var filtroSeleccionado = filtrosB[position]
                     contentBrillo.isVisible = false;
+                    contentContraste.isVisible = false;
                     if (filtroSeleccionado != "Filtros Basicos") {
                         if (image != null) {
                             fotografia.setImageURI(image.toUri())
@@ -55,6 +60,10 @@ class MainActivity2 : AppCompatActivity() {
                             "Escala de Grises" -> cambio = Grises(bitmap)
                             "Brillo" -> {
                                 contentBrillo.isVisible = true;
+                                cambio = bitmap
+                            }
+                            "Contraste" -> {
+                                contentContraste.isVisible = true;
                                 cambio = bitmap
                             }
                             else-> {
@@ -78,7 +87,23 @@ class MainActivity2 : AppCompatActivity() {
                 if (brillo.text != null) {
                     cambio = Brillo(bitmap, parseInt(brillo.text.toString()))
                 } else {
+                    //Default
                     cambio = Brillo(bitmap, 50)
+                }
+                fotografia.setImageBitmap(cambio)
+            }
+            false
+        })
+
+        Contraste.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                //Perform Code
+                bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
+                if (Contraste.text != null) {
+                    cambio = Contraste(bitmap, parseInt(Contraste.text.toString()))
+                } else {
+                    //Default
+                    cambio = Contraste(bitmap, 50)
                 }
                 fotografia.setImageBitmap(cambio)
             }
@@ -141,6 +166,42 @@ class MainActivity2 : AppCompatActivity() {
                 B += num;
                 if(B > 255) { B = 255; }
                 else if(B < 0) { B = 0; }
+
+                bmOut.setPixel(x, y, Color.rgb(R, G, B))
+            }
+        }
+        src.recycle()
+        return bmOut
+    }
+
+    private  fun Contraste(src: Bitmap, num: Int): Bitmap {
+        val bmOut = Bitmap.createBitmap(src.width, src.height, src.config)
+
+        var R: Int
+        var G: Int
+        var B: Int
+        var pixel: Int
+        val contrast = Math.pow((100.0 + num) / 100, 2.0)
+
+        // scan through all pixels
+        for (x in 0 until src.width) {
+            for (y in 0 until src.height) {
+                // get pixel color
+                pixel = src.getPixel(x, y)
+                R = Color.red(pixel);
+                R = (((((R / 255.0) - 0.5) * contrast) + 0.5) * 255.0).toInt()
+                if(R < 0) { R = 0; }
+                else if(R > 255) { R = 255; }
+
+                G = Color.green(pixel);
+                G = (((((G / 255.0) - 0.5) * contrast) + 0.5) * 255.0).toInt()
+                if(G < 0) { G = 0; }
+                else if(G > 255) { G = 255; }
+
+                B = Color.blue(pixel);
+                B = (((((B / 255.0) - 0.5) * contrast) + 0.5) * 255.0).toInt()
+                if(B < 0) { B = 0; }
+                else if(B > 255) { B = 255; }
 
                 bmOut.setPixel(x, y, Color.rgb(R, G, B))
             }
