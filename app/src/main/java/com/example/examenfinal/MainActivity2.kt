@@ -102,6 +102,7 @@ class MainActivity2 : AppCompatActivity() {
         brillo.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
+                fotografia.setImageURI(image?.toUri())
                 bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                 if (brillo.text != null) {
                     cambio = Brillo(bitmap, parseInt(brillo.text.toString()))
@@ -117,6 +118,7 @@ class MainActivity2 : AppCompatActivity() {
         Contraste.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
+                fotografia.setImageURI(image?.toUri())
                 bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                 if (Contraste.text != null) {
                     cambio = Contraste(bitmap, parseInt(Contraste.text.toString()))
@@ -132,6 +134,7 @@ class MainActivity2 : AppCompatActivity() {
         gamma.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
+                fotografia.setImageURI(image?.toUri())
                 bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                 if (gamma.text != null) {
                     cambio = Gamma(bitmap, (gamma.text.toString()).toDouble())
@@ -145,6 +148,7 @@ class MainActivity2 : AppCompatActivity() {
         })
 
         filtro.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+            fotografia.setImageURI(image?.toUri())
             bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
             if(i == R.id.Rojo){
                 cambio = Filtro(bitmap,1)
@@ -237,16 +241,19 @@ class MainActivity2 : AppCompatActivity() {
                 B = Color.blue(pixel)
 
                 if(num == 1){
+                    R= R
                     G = -255
                     B = -255
                     bmOut.setPixel(x, y, Color.rgb(R, G, B))
                 }else if (num == 2){
                     R = -255
+                    G=G
                     B = -255
                     bmOut.setPixel(x, y, Color.rgb(R, G, B))
                 }else{
                     R = -255
                     G = -255
+                    B=B
                     bmOut.setPixel(x, y, Color.rgb(R, G, B))
                 }
             }
