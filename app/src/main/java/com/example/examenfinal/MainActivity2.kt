@@ -31,7 +31,7 @@ class MainActivity2 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
-        filtro.clearCheck()
+        //filtro.clearCheck()
         val image = intent.getStringExtra("image")
         Toast.makeText(applicationContext, " " + image, Toast.LENGTH_SHORT).show()
         fotografia = findViewById(R.id.fotografia)
