@@ -115,7 +115,12 @@ class MainActivity2 : AppCompatActivity() {
                 if (filtroSeleccionado2 != "Filtros de Convolucion") {
                     bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                     when(filtroSeleccionado2) {
+                        //"Smoothing" -> cambio2 = efecto.smoothing()
                         "Gaussian Blur" -> cambio2 = efecto.gaussianBlur(bitmap)
+                        "Sharpen" -> cambio2 = efecto.sharpen(bitmap)
+                        "Mean Removal" -> cambio2 = efecto.meanRemoval(bitmap)
+                        "Embossing" -> cambio2 = efecto.embossing(bitmap)
+                        "Edge Detection" -> cambio2 = efecto.edgeDetection(bitmap)
                         else-> {
                             cambio2 = bitmap
                         }

@@ -223,7 +223,82 @@ class BitmapProcessing {
         return bmOut
     }
 
-    public fun gaussianBlur(original: Bitmap) : Bitmap? {
+    /*public fun smoothing (original: Bitmap) : Bitmap? {
+        val smoothingConfig = arrayOf(
+                doubleArrayOf(1.0, 2.0, 1.0),
+                doubleArrayOf(2.0, 4.0, 2.0),
+                doubleArrayOf(1.0, 2.0, 1.0)
+        )
+        val convMatrix = ConvolutionMatrix(3)
+        convMatrix.applyConfig(smoothingConfig)
+        convMatrix.Factor = 16.0
+        convMatrix.Offset = 0.0
+
+        var final = ConvolutionMatrix(3)
+        return final.computeConvolution3x3(original, convMatrix)
+    }*/
+
+    public fun gaussianBlur (original: Bitmap) : Bitmap? {
+        val gaussianBlurConfig = arrayOf(
+                doubleArrayOf(1.0, 2.0, 1.0),
+                doubleArrayOf(2.0, 4.0, 2.0),
+                doubleArrayOf(1.0, 2.0, 1.0)
+        )
+        val convMatrix = ConvolutionMatrix(3)
+        convMatrix.applyConfig(gaussianBlurConfig)
+        convMatrix.Factor = 16.0
+        convMatrix.Offset = 0.0
+
+        var final = ConvolutionMatrix(3)
+        return final.computeConvolution3x3(original, convMatrix)
+    }
+
+    public fun sharpen (original: Bitmap) : Bitmap? {
+        val sharpenConfig = arrayOf(
+                doubleArrayOf(0.0, -2.0, 0.0),
+                doubleArrayOf(-2.0, 11.0, -2.0),
+                doubleArrayOf(0.0, -2.0, 0.0)
+        )
+        val convMatrix = ConvolutionMatrix(3)
+        convMatrix.applyConfig(sharpenConfig)
+        convMatrix.Factor = 3.0
+        convMatrix.Offset = 0.0
+
+        var final = ConvolutionMatrix(3)
+        return final.computeConvolution3x3(original, convMatrix)
+    }
+
+    public fun meanRemoval (original: Bitmap) : Bitmap? {
+        val meanRemovalConfig = arrayOf(
+                doubleArrayOf(-1.0, -1.0, -1.0),
+                doubleArrayOf(-1.0, 9.0, -1.0),
+                doubleArrayOf(-1.0, -1.0, -1.0)
+        )
+        val convMatrix = ConvolutionMatrix(3)
+        convMatrix.applyConfig(meanRemovalConfig)
+        convMatrix.Factor = 1.0
+        convMatrix.Offset = 0.0
+
+        var final = ConvolutionMatrix(3)
+        return final.computeConvolution3x3(original, convMatrix)
+    }
+
+    public fun embossing (original: Bitmap) : Bitmap? {
+        val embossingConfig = arrayOf(
+                doubleArrayOf(-1.0, 0.0, -1.0),
+                doubleArrayOf(0.0, 4.0, 0.0),
+                doubleArrayOf(-1.0, 0.0, -1.0)
+        )
+        val convMatrix = ConvolutionMatrix(3)
+        convMatrix.applyConfig(embossingConfig)
+        convMatrix.Factor = 1.0
+        convMatrix.Offset = 127.0
+
+        var final = ConvolutionMatrix(3)
+        return final.computeConvolution3x3(original, convMatrix)
+    }
+
+    public fun edgeDetection(original: Bitmap) : Bitmap? {
         val edgeDetecionConfig = arrayOf(
             doubleArrayOf(1.0, 1.0, 1.0),
             doubleArrayOf(0.0, 0.0, 0.0),
