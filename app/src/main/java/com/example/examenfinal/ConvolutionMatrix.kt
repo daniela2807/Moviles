@@ -4,15 +4,15 @@ import android.graphics.Bitmap
 import android.graphics.Color
 
 
-class MatrizConvolucion {
+public class ConvolutionMatrix{
     val SIZE = 3
 
-    lateinit var Matrix: Array<DoubleArray>
-    var Factor = 1
-    var Offset = 1
+    var Matrix: Array<DoubleArray>
+    var Factor = 1.0
+    var Offset = 1.0
 
-    fun ConvolutionMatrix(size: Int) {
-        Matrix = Array(size, {DoubleArray(size)})
+    constructor(size: Int){
+        Matrix = Array(size) { DoubleArray(size) }
     }
 
     fun setAll(value: Double) {
@@ -31,18 +31,20 @@ class MatrizConvolucion {
         }
     }
 
-    fun computeConvolution3x3(src: Bitmap, matrix: MatrizConvolucion): Bitmap {
-        var result = Bitmap.createBitmap(src.width, src.height, src.config)
-        var A: Int
-        var R: Int
-        var G: Int
-        var B: Int
+    fun computeConvolution3x3(src: Bitmap?, matrix: ConvolutionMatrix): Bitmap? {
+        val width = src!!.width
+        val height = src.height
+        val result = Bitmap.createBitmap(width, height, src.config)
+        var a: Int
+        var r: Int
+        var g: Int
+        var b: Int
         var sumR: Int
         var sumG: Int
         var sumB: Int
         val pixels = Array(SIZE) { IntArray(SIZE) }
-        for (y in 0 until src.height - 2) {
-            for (x in 0 until src.width - 2) {
+        for (y in 0 until height - 2) {
+            for (x in 0 until width - 2) {
 
                 // get pixel matrix
                 for (i in 0 until SIZE) {
@@ -52,7 +54,7 @@ class MatrizConvolucion {
                 }
 
                 // get alpha of center pixel
-                A = Color.alpha(pixels[1][1])
+                a = Color.alpha(pixels[1][1])
 
                 // init color sum
                 sumB = 0
@@ -69,35 +71,35 @@ class MatrizConvolucion {
                 }
 
                 // get final Red
-                R = (sumR / matrix.Factor + matrix.Offset)
-                if (R < 0) {
-                    R = 0
-                } else if (R > 255) {
-                    R = 255
+                r = (sumR / matrix.Factor + matrix.Offset).toInt()
+                if (r < 0) {
+                    r = 0
+                } else if (r > 255) {
+                    r = 255
                 }
 
                 // get final Green
-                G = (sumG / matrix.Factor + matrix.Offset)
-                if (G < 0) {
-                    G = 0
-                } else if (G > 255) {
-                    G = 255
+                g = (sumG / matrix.Factor + matrix.Offset).toInt()
+                if (g < 0) {
+                    g = 0
+                } else if (g > 255) {
+                    g = 255
                 }
 
                 // get final Blue
-                B = (sumB / matrix.Factor + matrix.Offset)
-                if (B < 0) {
-                    B = 0
-                } else if (B > 255) {
-                    B = 255
+                b = (sumB / matrix.Factor + matrix.Offset).toInt()
+                if (b < 0) {
+                    b = 0
+                } else if (b > 255) {
+                    b = 255
                 }
 
                 // apply new pixel
-                result.setPixel(x + 1, y + 1, Color.argb(A, R, G, B))
+                result.setPixel(x + 1, y + 1, Color.rgb(r, g, b))
             }
         }
         src.recycle()
-
+        //src = null
 
         // final image
         return result
