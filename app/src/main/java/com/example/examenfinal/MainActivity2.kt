@@ -23,9 +23,11 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var spinner3: Spinner
     lateinit var brillo : TextView
     lateinit var gamma : TextView
+    lateinit var saturacion : TextView
     //lateinit var tipodefiltro: TextView
     lateinit var Contraste : TextView
     lateinit var filtro: RadioGroup
+    lateinit var contentSaturacion : LinearLayout
     lateinit var contentBrillo : LinearLayout
     lateinit var contentContraste : LinearLayout
     lateinit var contentGamma : LinearLayout
@@ -42,11 +44,13 @@ class MainActivity2 : AppCompatActivity() {
         spinner1 = findViewById(R.id.idBasicos)
         spinner2 = findViewById(R.id.idConvolucion)
         spinner3 = findViewById(R.id.idOtros)
+        saturacion = findViewById(R.id.Saturacion)
         brillo = findViewById(R.id.Brillo)
         Contraste = findViewById(R.id.Contraste)
         filtro = findViewById(R.id.Filtro)
         gamma = findViewById(R.id.Gamma)
         //tipodefiltro = findViewById(R.id.txtElige)
+        contentSaturacion = findViewById(R.id.PanelSaturacion)
         contentBrillo = findViewById(R.id.PanelBrillo)
         contentFiltro = findViewById(R.id.PanelFiltro)
         contentContraste = findViewById(R.id.PanelContraste)
@@ -65,6 +69,7 @@ class MainActivity2 : AppCompatActivity() {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     var filtroSeleccionado = filtrosB[position]
                     var cambio : Bitmap?
+                    contentSaturacion.isVisible = false;
                     contentFiltro.isVisible = false;
                     contentGamma.isVisible = false;
                     contentBrillo.isVisible = false;
@@ -108,10 +113,12 @@ class MainActivity2 : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 var filtroSeleccionado2 = filtrosC[position]
                 var cambio2 : Bitmap?
+                contentSaturacion.isVisible = false;
                 contentFiltro.isVisible = false;
                 contentGamma.isVisible = false;
                 contentBrillo.isVisible = false;
                 contentContraste.isVisible = false;
+
                 if (filtroSeleccionado2 != "Filtros de Convolucion") {
                     bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                     when(filtroSeleccionado2) {
@@ -139,6 +146,7 @@ class MainActivity2 : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 var filtroSeleccionado3 = filtrosO[position]
                 var cambio2 : Bitmap?
+                contentSaturacion.isVisible = false;
                 contentFiltro.isVisible = false;
                 contentGamma.isVisible = false;
                 contentBrillo.isVisible = false;
@@ -147,6 +155,12 @@ class MainActivity2 : AppCompatActivity() {
                     bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                     when(filtroSeleccionado3) {
                         "Sepia" -> cambio2 = efecto.Sepia(bitmap)
+                        "Sketch" -> cambio2 = efecto.sketch(bitmap)
+                        "Noise" -> cambio2 = efecto.Noise(bitmap)
+                        "Saturation" -> {
+                            contentSaturacion.isVisible = true
+                            cambio2 = bitmap
+                        }
                         else-> {
                             cambio2 = bitmap
                         }
@@ -172,6 +186,23 @@ class MainActivity2 : AppCompatActivity() {
                 } else {
                     //Default
                     cambio = efecto.Brillo(bitmap, 50)
+                }
+                fotografia.setImageBitmap(cambio)
+            }
+            false
+        })
+
+        saturacion.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                //Perform Code
+                var cambio : Bitmap?
+                //fotografia.setImageURI(image?.toUri())
+                bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
+                if (saturacion.text != null) {
+                    cambio = efecto.Saturation(bitmap, parseInt(saturacion.text.toString()))
+                } else {
+                    //Default
+                    cambio = efecto.Saturation(bitmap, 50)
                 }
                 fotografia.setImageBitmap(cambio)
             }
