@@ -86,18 +86,18 @@ class BitmapProcessing {
                 B = Color.blue(pixel)
 
                 if(num == 1){
-                    R= 255
+                    R= R
                     G = 0
                     B = 0
                     bmOut.setPixel(x, y, Color.rgb(R, G, B))
                 }else if (num == 2){
-                    R = -255
+                    R = 0
                     G= G
-                    B = -255
+                    B = 0
                     bmOut.setPixel(x, y, Color.rgb(R, G, B))
                 }else{
-                    R = -255
-                    G = -255
+                    R = 0
+                    G = 0
                     B= B
                     bmOut.setPixel(x, y, Color.rgb(R, G, B))
                 }

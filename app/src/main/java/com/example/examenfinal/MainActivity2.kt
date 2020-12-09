@@ -176,6 +176,7 @@ class MainActivity2 : AppCompatActivity() {
         }
 
         brillo.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            fotografia.setImageURI(image?.toUri())
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
                 var cambio : Bitmap?
@@ -193,6 +194,7 @@ class MainActivity2 : AppCompatActivity() {
         })
 
         saturacion.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            fotografia.setImageURI(image?.toUri())
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
                 var cambio : Bitmap?
@@ -210,6 +212,7 @@ class MainActivity2 : AppCompatActivity() {
         })
 
         Contraste.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            fotografia.setImageURI(image?.toUri())
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
                 var cambio: Bitmap?
@@ -227,6 +230,7 @@ class MainActivity2 : AppCompatActivity() {
         })
 
         gamma.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            fotografia.setImageURI(image?.toUri())
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
                 var cambio : Bitmap?
@@ -244,7 +248,7 @@ class MainActivity2 : AppCompatActivity() {
         })
 
         filtro.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
-            //fotografia.setImageURI(image?.toUri())
+            fotografia.setImageURI(image?.toUri())
             var cambio : Bitmap
             bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
             if (i == R.id.Rojo) {
