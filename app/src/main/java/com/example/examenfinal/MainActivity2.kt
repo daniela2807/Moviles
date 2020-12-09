@@ -24,9 +24,11 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var brillo : TextView
     lateinit var gamma : TextView
     lateinit var saturacion : TextView
+    lateinit var cdepth : TextView
     //lateinit var tipodefiltro: TextView
     lateinit var Contraste : TextView
     lateinit var filtro: RadioGroup
+    lateinit var contentCdepth: LinearLayout
     lateinit var contentSaturacion : LinearLayout
     lateinit var contentBrillo : LinearLayout
     lateinit var contentContraste : LinearLayout
@@ -44,12 +46,14 @@ class MainActivity2 : AppCompatActivity() {
         spinner1 = findViewById(R.id.idBasicos)
         spinner2 = findViewById(R.id.idConvolucion)
         spinner3 = findViewById(R.id.idOtros)
+        cdepth = findViewById(R.id.Cdepth)
         saturacion = findViewById(R.id.Saturacion)
         brillo = findViewById(R.id.Brillo)
         Contraste = findViewById(R.id.Contraste)
         filtro = findViewById(R.id.Filtro)
         gamma = findViewById(R.id.Gamma)
         //tipodefiltro = findViewById(R.id.txtElige)
+        contentCdepth = findViewById(R.id.PanelCdepth)
         contentSaturacion = findViewById(R.id.PanelSaturacion)
         contentBrillo = findViewById(R.id.PanelBrillo)
         contentFiltro = findViewById(R.id.PanelFiltro)
@@ -69,6 +73,7 @@ class MainActivity2 : AppCompatActivity() {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     var filtroSeleccionado = filtrosB[position]
                     var cambio : Bitmap?
+                    contentCdepth.isVisible = false;
                     contentSaturacion.isVisible = false;
                     contentFiltro.isVisible = false;
                     contentGamma.isVisible = false;
@@ -113,6 +118,7 @@ class MainActivity2 : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 var filtroSeleccionado2 = filtrosC[position]
                 var cambio2 : Bitmap?
+                contentCdepth.isVisible = false;
                 contentSaturacion.isVisible = false;
                 contentFiltro.isVisible = false;
                 contentGamma.isVisible = false;
@@ -122,7 +128,7 @@ class MainActivity2 : AppCompatActivity() {
                 if (filtroSeleccionado2 != "Filtros de Convolucion") {
                     bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                     when(filtroSeleccionado2) {
-                        //"Smoothing" -> cambio2 = efecto.smoothing()
+                        "Smoothing" -> cambio2 = efecto.smoothing(bitmap)
                         "Gaussian Blur" -> cambio2 = efecto.gaussianBlur(bitmap)
                         "Sharpen" -> cambio2 = efecto.sharpen(bitmap)
                         "Mean Removal" -> cambio2 = efecto.meanRemoval(bitmap)
@@ -146,6 +152,7 @@ class MainActivity2 : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 var filtroSeleccionado3 = filtrosO[position]
                 var cambio2 : Bitmap?
+                contentCdepth.isVisible = false;
                 contentSaturacion.isVisible = false;
                 contentFiltro.isVisible = false;
                 contentGamma.isVisible = false;
@@ -161,6 +168,11 @@ class MainActivity2 : AppCompatActivity() {
                             contentSaturacion.isVisible = true
                             cambio2 = bitmap
                         }
+                        "Cdepth" -> {
+                            contentCdepth.isVisible = true
+                            cambio2 = bitmap
+                        }
+
                         else-> {
                             cambio2 = bitmap
                         }
@@ -187,6 +199,24 @@ class MainActivity2 : AppCompatActivity() {
                 } else {
                     //Default
                     cambio = efecto.Brillo(bitmap, 50)
+                }
+                fotografia.setImageBitmap(cambio)
+            }
+            false
+        })
+
+        cdepth.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            fotografia.setImageURI(image?.toUri())
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                //Perform Code
+                var cambio : Bitmap?
+                //fotografia.setImageURI(image?.toUri())
+                bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
+                if (cdepth.text != null) {
+                    cambio = efecto.Cdepth(bitmap, parseInt(cdepth.text.toString()))
+                } else {
+                    //Default
+                    cambio = efecto.Cdepth(bitmap, 32)
                 }
                 fotografia.setImageBitmap(cambio)
             }

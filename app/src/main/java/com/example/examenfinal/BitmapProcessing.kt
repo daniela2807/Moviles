@@ -122,16 +122,16 @@ class BitmapProcessing {
 
         for (i in 0 until MAX_SIZE) {
             gammaR[i] = Math.min(
-                    MAX_VALUE_INT,
-                    (MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE / num) + 0.5).toInt()
+                MAX_VALUE_INT,
+                (MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE / num) + 0.5).toInt()
             )
             gammaG[i] = Math.min(
-                    MAX_VALUE_INT,
-                    (MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE / num) + 0.5).toInt()
+                MAX_VALUE_INT,
+                (MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE / num) + 0.5).toInt()
             )
             gammaB[i] = Math.min(
-                    MAX_VALUE_INT,
-                    (MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE / num) + 0.5).toInt()
+                MAX_VALUE_INT,
+                (MAX_VALUE_DBL * Math.pow(i / MAX_VALUE_DBL, REVERSE / num) + 0.5).toInt()
             )
         }
 
@@ -223,26 +223,26 @@ class BitmapProcessing {
         return bmOut
     }
 
-    /*public fun smoothing (original: Bitmap) : Bitmap? {
+    public fun smoothing(original: Bitmap) : Bitmap? {
         val smoothingConfig = arrayOf(
-                doubleArrayOf(1.0, 2.0, 1.0),
-                doubleArrayOf(2.0, 4.0, 2.0),
-                doubleArrayOf(1.0, 2.0, 1.0)
+            doubleArrayOf(1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0)
         )
         val convMatrix = ConvolutionMatrix(3)
         convMatrix.applyConfig(smoothingConfig)
-        convMatrix.Factor = 16.0
-        convMatrix.Offset = 0.0
+        convMatrix.Factor = 9.0
+        convMatrix.Offset = 1.0
 
         var final = ConvolutionMatrix(3)
         return final.computeConvolution3x3(original, convMatrix)
-    }*/
+    }
 
     public fun gaussianBlur(original: Bitmap) : Bitmap? {
         val gaussianBlurConfig = arrayOf(
-                doubleArrayOf(1.0, 2.0, 1.0),
-                doubleArrayOf(2.0, 4.0, 2.0),
-                doubleArrayOf(1.0, 2.0, 1.0)
+            doubleArrayOf(1.0, 2.0, 1.0),
+            doubleArrayOf(2.0, 4.0, 2.0),
+            doubleArrayOf(1.0, 2.0, 1.0)
         )
         val convMatrix = ConvolutionMatrix(3)
         convMatrix.applyConfig(gaussianBlurConfig)
@@ -255,9 +255,9 @@ class BitmapProcessing {
 
     public fun sharpen(original: Bitmap) : Bitmap? {
         val sharpenConfig = arrayOf(
-                doubleArrayOf(0.0, -2.0, 0.0),
-                doubleArrayOf(-2.0, 11.0, -2.0),
-                doubleArrayOf(0.0, -2.0, 0.0)
+            doubleArrayOf(0.0, -2.0, 0.0),
+            doubleArrayOf(-2.0, 11.0, -2.0),
+            doubleArrayOf(0.0, -2.0, 0.0)
         )
         val convMatrix = ConvolutionMatrix(3)
         convMatrix.applyConfig(sharpenConfig)
@@ -270,9 +270,9 @@ class BitmapProcessing {
 
     public fun meanRemoval(original: Bitmap) : Bitmap? {
         val meanRemovalConfig = arrayOf(
-                doubleArrayOf(-1.0, -1.0, -1.0),
-                doubleArrayOf(-1.0, 9.0, -1.0),
-                doubleArrayOf(-1.0, -1.0, -1.0)
+            doubleArrayOf(-1.0, -1.0, -1.0),
+            doubleArrayOf(-1.0, 9.0, -1.0),
+            doubleArrayOf(-1.0, -1.0, -1.0)
         )
         val convMatrix = ConvolutionMatrix(3)
         convMatrix.applyConfig(meanRemovalConfig)
@@ -285,9 +285,9 @@ class BitmapProcessing {
 
     public fun embossing(original: Bitmap) : Bitmap? {
         val embossingConfig = arrayOf(
-                doubleArrayOf(-1.0, 0.0, -1.0),
-                doubleArrayOf(0.0, 4.0, 0.0),
-                doubleArrayOf(-1.0, 0.0, -1.0)
+            doubleArrayOf(-1.0, 0.0, -1.0),
+            doubleArrayOf(0.0, 4.0, 0.0),
+            doubleArrayOf(-1.0, 0.0, -1.0)
         )
         val convMatrix = ConvolutionMatrix(3)
         convMatrix.applyConfig(embossingConfig)
@@ -300,9 +300,9 @@ class BitmapProcessing {
 
     public fun edgeDetection(original: Bitmap) : Bitmap? {
         val edgeDetecionConfig = arrayOf(
-                doubleArrayOf(1.0, 1.0, 1.0),
-                doubleArrayOf(0.0, 0.0, 0.0),
-                doubleArrayOf(-1.0, -1.0, -1.0)
+            doubleArrayOf(1.0, 1.0, 1.0),
+            doubleArrayOf(0.0, 0.0, 0.0),
+            doubleArrayOf(-1.0, -1.0, -1.0)
         )
         val convMatrix = ConvolutionMatrix(3)
         convMatrix.applyConfig(edgeDetecionConfig)
@@ -402,9 +402,15 @@ class BitmapProcessing {
                 sumB = 0
                 sumG = 0
                 sumR = 0
-                sumR = (type * Color.red(pixels[1][1])) - Color.red(pixels[0][0]) - Color.red(pixels[0][2]) - Color.red(pixels[2][0]) - Color.red(pixels[2][2])
-                sumG = (type * Color.green(pixels[1][1])) - Color.green(pixels[0][0]) - Color.green(pixels[0][2]) - Color.green(pixels[2][0]) - Color.green(pixels[2][2])
-                sumB = (type * Color.blue(pixels[1][1])) - Color.blue(pixels[0][0]) - Color.blue(pixels[0][2]) - Color.blue(pixels[2][0]) - Color.blue(pixels[2][2])
+                sumR = (type * Color.red(pixels[1][1])) - Color.red(pixels[0][0]) - Color.red(pixels[0][2]) - Color.red(
+                    pixels[2][0]
+                ) - Color.red(pixels[2][2])
+                sumG = (type * Color.green(pixels[1][1])) - Color.green(pixels[0][0]) - Color.green(
+                    pixels[0][2]
+                ) - Color.green(pixels[2][0]) - Color.green(pixels[2][2])
+                sumB = (type * Color.blue(pixels[1][1])) - Color.blue(pixels[0][0]) - Color.blue(
+                    pixels[0][2]
+                ) - Color.blue(pixels[2][0]) - Color.blue(pixels[2][2])
                 // get final Red
                 R = (sumR + threshold)
                 if (R < 0) {
@@ -454,8 +460,10 @@ class BitmapProcessing {
                 // get current index in 2D-matrix
                 index = y * width + x
                 // get random color
-                val randColor: Int = Color.rgb(random.nextInt(COLOR_MAX),
-                        random.nextInt(COLOR_MAX), random.nextInt(COLOR_MAX))
+                val randColor: Int = Color.rgb(
+                    random.nextInt(COLOR_MAX),
+                    random.nextInt(COLOR_MAX), random.nextInt(COLOR_MAX)
+                )
                 // OR
                 pixels[index] = pixels[index] or randColor
             }
@@ -486,5 +494,52 @@ class BitmapProcessing {
 
         src.recycle()
         return bitmapResult
+    }
+
+    public fun Cdepth(src: Bitmap, bitOffset: Int): Bitmap {
+        // get image size
+        val width: Int = src.getWidth()
+        val height: Int = src.getHeight()
+        // create output bitmap
+        val bmOut = Bitmap.createBitmap(width, height, src.getConfig())
+        // color information
+        var A: Int
+        var R: Int
+        var G: Int
+        var B: Int
+        var pixel: Int
+
+
+        // scan through all pixels
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                // get pixel color
+                pixel = src.getPixel(x, y)
+                A = Color.alpha(pixel)
+                R = Color.red(pixel)
+                G = Color.green(pixel)
+                B = Color.blue(pixel)
+
+                // round-off color offset
+                R = R + bitOffset / 2 - (R + bitOffset / 2) % bitOffset - 1
+                if (R < 0) {
+                    R = 0
+                }
+                G = G + bitOffset / 2 - (G + bitOffset / 2) % bitOffset - 1
+                if (G < 0) {
+                    G = 0
+                }
+                B = B + bitOffset / 2 - (B + bitOffset / 2) % bitOffset - 1
+                if (B < 0) {
+                    B = 0
+                }
+
+                // set pixel color to output bitmap
+                bmOut.setPixel(x, y, Color.argb(A, R, G, B))
+            }
+        }
+
+        src.recycle()
+        return bmOut
     }
 }
