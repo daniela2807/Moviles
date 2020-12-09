@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
-                android:text="Nivel de Saturacion:"
+                android:text="Nivel de Saturacion [0-200]:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
