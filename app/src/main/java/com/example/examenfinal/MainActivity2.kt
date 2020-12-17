@@ -3,6 +3,7 @@ package com.example.examenfinal
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.ScaleGestureDetector
@@ -17,6 +18,8 @@ import java.lang.Integer.parseInt
 class MainActivity2 : AppCompatActivity() {
 
     lateinit var fotografia: ImageView
+    lateinit var Uri: Uri
+    lateinit var deshacer: Button
     lateinit var bitmap: Bitmap
     lateinit var cambio : Bitmap
     lateinit var spinner1 : Spinner
@@ -42,6 +45,7 @@ class MainActivity2 : AppCompatActivity() {
         val efecto = BitmapProcessing()
         val image = intent.getStringExtra("image")
         Toast.makeText(applicationContext, " " + image, Toast.LENGTH_SHORT).show()
+        deshacer = findViewById(R.id.fab)
         fotografia = findViewById(R.id.fotografia)
         spinner1 = findViewById(R.id.idBasicos)
         spinner2 = findViewById(R.id.idConvolucion)
@@ -64,10 +68,13 @@ class MainActivity2 : AppCompatActivity() {
         val filtrosO = resources.getStringArray(R.array.Fotros)
        // fotografia2 = findViewById(R.id.fotografia2)
         if (image != null) {
+            Uri = image.toUri()
             fotografia.setImageURI(image.toUri())
             //bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
             //fotografia.setImageBitmap(bitmap)
         }
+
+
 
         var scaleFactor = 1f
         val scaleGestureDetector = ScaleGestureDetector(
@@ -84,6 +91,9 @@ class MainActivity2 : AppCompatActivity() {
                     }
                 }
         )
+        deshacer.setOnClickListener {
+            fotografia.setImageURI(Uri)
+        }
 
         spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -332,4 +342,5 @@ class MainActivity2 : AppCompatActivity() {
             fotografia.setImageBitmap(cambio)
         })
     }
+
 }
