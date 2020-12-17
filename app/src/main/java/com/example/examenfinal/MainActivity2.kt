@@ -19,7 +19,7 @@ class MainActivity2 : AppCompatActivity() {
 
     lateinit var fotografia: ImageView
     lateinit var Uri: Uri
-    lateinit var deshacer: Button
+    lateinit var deshacer: View
     lateinit var bitmap: Bitmap
     lateinit var cambio : Bitmap
     lateinit var spinner1 : Spinner

@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:textColor="#FFFFFF">
 
     <TextView android:id="@+id/txtElige"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
         android:text="Elige un filtro:"
         android:textSize="24sp"
         android:gravity="center"/>
@@ -21,7 +23,7 @@
         <Spinner
             android:id="@+id/idBasicos"
             android:layout_width="137dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <Spinner
             android:id="@+id/idConvolucion"

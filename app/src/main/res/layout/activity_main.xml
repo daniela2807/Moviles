@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/bg_color"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -19,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:textColor="#FFFFFF"
             android:gravity="center"
             android:text="EXAMEN FINAL"
             android:textSize="24sp"
@@ -29,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:textColor="#FFFFFF"
             android:gravity="center"
             android:text="Seleccionar Imagen"
             android:textSize="24sp"
@@ -47,16 +50,21 @@
             android:layout_width="match_parent"
             android:layout_height="74dp"
             android:layout_marginTop="10dp"
+            android:background="@drawable/custom_button"
+            android:src="@drawable/subir"
             android:text="SELECCIONAR IMAGEN"
-            app:backgroundTint="#FF5722" />
+
+            />
 
         <Button
             android:id="@+id/btnCamara"
             android:layout_width="match_parent"
             android:layout_height="74dp"
             android:layout_marginTop="10dp"
+            android:background="@drawable/custom_button"
+            android:src="@drawable/camara"
             android:text="TOMAR FOTO"
-            app:backgroundTint="#FF5722" />
+             />
 
 
     </LinearLayout>
