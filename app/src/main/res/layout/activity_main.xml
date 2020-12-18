@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/bg_color"
+    android:background="@drawable/fondo"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -14,26 +14,28 @@
         android:orientation="vertical"
         tools:layout_editor_absoluteX="39dp"
         tools:layout_editor_absoluteY="258dp">
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:textColor="#FFFFFF"
             android:gravity="center"
             android:text="EXAMEN FINAL"
+            android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:textColor="#FFFFFF"
             android:gravity="center"
             android:text="Seleccionar Imagen"
+            android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold" />
 
