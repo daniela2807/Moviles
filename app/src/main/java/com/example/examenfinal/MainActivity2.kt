@@ -114,7 +114,7 @@ class MainActivity2 : AppCompatActivity() {
 
             Toast.makeText(
                 this,
-                url,
+                "Imagen Guardada en Galeria",
                 Toast.LENGTH_LONG
             ).show()
         }

@@ -170,15 +170,21 @@
                     android:text="Azul " />
             </RadioGroup>
         </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="92dp"
-            android:layout_gravity="start|right"
-            android:layout_margin="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
             android:backgroundTint="@color/white"
             android:src="@drawable/save"
+            android:layout_toLeftOf="@+id/fab"
             app:borderWidth="4dp"
             app:elevation="4dp" />
 
@@ -186,13 +192,18 @@
 
             android:id="@+id/fab"
             android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_height="92dp"
-            android:layout_gravity="clip_horizontal"
-            android:layout_margin="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:adjustViewBounds="true"
             android:backgroundTint="@color/white"
             android:src="@drawable/basura"
             app:borderWidth="4dp"
             app:elevation="4dp" />
+    </RelativeLayout>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

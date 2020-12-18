@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_GALERY){
            //Imagen.setImageURI(data?.data)
-            Toast.makeText(applicationContext," " + data?.data,Toast.LENGTH_SHORT).show()
+           // Toast.makeText(applicationContext," " + data?.data,Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainActivity2::class.java).apply {
                 putExtra("image",data?.data.toString())
             }
@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         if(resultCode == Activity.RESULT_OK  && requestCode == REQUEST_CAMERA){
-            Toast.makeText(applicationContext," " + foto,Toast.LENGTH_SHORT).show()
+           // Toast.makeText(applicationContext," " + foto,Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainActivity2::class.java).apply {
                 putExtra("image",foto.toString())
             }
