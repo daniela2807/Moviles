@@ -1,10 +1,10 @@
 package com.example.examenfinal
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.KeyEvent
 import android.view.ScaleGestureDetector
 import android.view.View
@@ -20,6 +20,7 @@ class MainActivity2 : AppCompatActivity() {
     lateinit var fotografia: ImageView
     lateinit var Uri: Uri
     lateinit var deshacer: View
+    lateinit var botonGuardar: View
     lateinit var bitmap: Bitmap
     lateinit var cambio : Bitmap
     lateinit var spinner1 : Spinner
@@ -44,8 +45,9 @@ class MainActivity2 : AppCompatActivity() {
         //filtro.clearCheck()
         val efecto = BitmapProcessing()
         val image = intent.getStringExtra("image")
-        Toast.makeText(applicationContext, " " + image, Toast.LENGTH_SHORT).show()
+       // Toast.makeText(applicationContext, " " + image, Toast.LENGTH_SHORT).show()
         deshacer = findViewById(R.id.fab)
+        botonGuardar = findViewById(R.id.save)
         fotografia = findViewById(R.id.fotografia)
         spinner1 = findViewById(R.id.idBasicos)
         spinner2 = findViewById(R.id.idConvolucion)
@@ -66,6 +68,8 @@ class MainActivity2 : AppCompatActivity() {
         val filtrosB = resources.getStringArray(R.array.Fbasicos)
         val filtrosC = resources.getStringArray(R.array.Fconvolucion)
         val filtrosO = resources.getStringArray(R.array.Fotros)
+        //val savefile = Save()
+
        // fotografia2 = findViewById(R.id.fotografia2)
         if (image != null) {
             Uri = image.toUri()
@@ -74,31 +78,58 @@ class MainActivity2 : AppCompatActivity() {
             //fotografia.setImageBitmap(bitmap)
         }
 
+        bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
 
-
+        //Variables para zoom
         var scaleFactor = 1f
         val scaleGestureDetector = ScaleGestureDetector(
-                this,
-                object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
-                    override fun onScale(detector: ScaleGestureDetector): Boolean {
-                        scaleFactor *= detector.scaleFactor
-                        scaleFactor = scaleFactor.coerceIn(0.1f, 5.0f)
+            this,
+            object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+                override fun onScale(detector: ScaleGestureDetector): Boolean {
+                    scaleFactor *= detector.scaleFactor
+                    scaleFactor = scaleFactor.coerceIn(0.1f, 5.0f)
 
-                        fotografia.scaleX = scaleFactor
-                        fotografia.scaleY = scaleFactor
+                    fotografia.scaleX = scaleFactor
+                    fotografia.scaleY = scaleFactor
 
-                        return super.onScale(detector)
-                    }
+                    return super.onScale(detector)
                 }
+            }
         )
+
+        //Boton flotante para deshacer cambios
         deshacer.setOnClickListener {
             fotografia.setImageURI(Uri)
         }
 
+        //Boton flotante para guardar imagen
+        botonGuardar.setOnClickListener{
+            val filename = "firma-" + System.currentTimeMillis() + ".png"
+            val url: String = MediaStore.Images.Media.insertImage(
+                contentResolver,
+                (fotografia.getDrawable() as BitmapDrawable).bitmap,
+                filename,
+                "Firma creada desde Signature app"
+            )
+
+            Toast.makeText(
+                this,
+                url,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+        //Opciones para el spinner numero 1 de efectos basicos
         spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
                     var filtroSeleccionado = filtrosB[position]
                     var cambio : Bitmap?
+                    //Ocultamos configuracion
                     contentCdepth.isVisible = false;
                     contentSaturacion.isVisible = false;
                     contentFiltro.isVisible = false;
@@ -140,14 +171,18 @@ class MainActivity2 : AppCompatActivity() {
             }
         }
 
+        //Evento de Zoom
         fotografia.setOnTouchListener { _, event ->
             scaleGestureDetector.onTouchEvent(event)
         }
 
+
+        //Opciones para el spinner numero 2 de efectos de convuolucion
         spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 var filtroSeleccionado2 = filtrosC[position]
                 var cambio2 : Bitmap?
+                //Ocultamos configuracion
                 contentCdepth.isVisible = false;
                 contentSaturacion.isVisible = false;
                 contentFiltro.isVisible = false;
@@ -178,10 +213,12 @@ class MainActivity2 : AppCompatActivity() {
             }
         }
 
+        //Opciones para el spinner numero 3 de efectos extra
         spinner3.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 var filtroSeleccionado3 = filtrosO[position]
                 var cambio2 : Bitmap?
+                //Ocultamos configuracion
                 contentCdepth.isVisible = false;
                 contentSaturacion.isVisible = false;
                 contentFiltro.isVisible = false;
@@ -221,14 +258,13 @@ class MainActivity2 : AppCompatActivity() {
             //fotografia.setImageURI(image?.toUri())
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
-                var cambio : Bitmap?
+                var cambio: Bitmap?
                 //fotografia.setImageURI(image?.toUri())
                 bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                 if (brillo.text != null) {
-                    if(parseInt(brillo.text.toString()) >= -255 &&  parseInt(brillo.text.toString()) <= 255){
+                    if (parseInt(brillo.text.toString()) >= -255 && parseInt(brillo.text.toString()) <= 255) {
                         cambio = efecto.Brillo(bitmap, parseInt(brillo.text.toString()))
-                    }else
-                    {
+                    } else {
                         cambio = efecto.Brillo(bitmap, 0)
                     }
 
@@ -245,7 +281,7 @@ class MainActivity2 : AppCompatActivity() {
             //fotografia.setImageURI(image?.toUri())
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
-                var cambio : Bitmap?
+                var cambio: Bitmap?
                 //fotografia.setImageURI(image?.toUri())
                 bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                 if (cdepth.text != null) {
@@ -263,14 +299,13 @@ class MainActivity2 : AppCompatActivity() {
             //fotografia.setImageURI(image?.toUri())
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
-                var cambio : Bitmap?
+                var cambio: Bitmap?
                 //fotografia.setImageURI(image?.toUri())
                 bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                 if (saturacion.text != null) {
-                    if(parseInt(saturacion.text.toString()) >= 0 &&  parseInt(saturacion.text.toString()) <= 200){
+                    if (parseInt(saturacion.text.toString()) >= 0 && parseInt(saturacion.text.toString()) <= 200) {
                         cambio = efecto.Saturation(bitmap, parseInt(saturacion.text.toString()))
-                    }else
-                    {
+                    } else {
                         cambio = efecto.Saturation(bitmap, 100)
                     }
                 } else {
@@ -290,10 +325,9 @@ class MainActivity2 : AppCompatActivity() {
                 //fotografia.setImageURI(image?.toUri())
                 bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                 if (Contraste.text != null) {
-                    if(parseInt(Contraste.text.toString()) >= -100 &&  parseInt(Contraste.text.toString()) <= 100){
+                    if (parseInt(Contraste.text.toString()) >= -100 && parseInt(Contraste.text.toString()) <= 100) {
                         cambio = efecto.Contraste(bitmap, parseInt(Contraste.text.toString()))
-                    }else
-                    {
+                    } else {
                         cambio = efecto.Contraste(bitmap, 0)
                     }
                 } else {
@@ -309,14 +343,13 @@ class MainActivity2 : AppCompatActivity() {
             //fotografia.setImageURI(image?.toUri())
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
-                var cambio : Bitmap?
+                var cambio: Bitmap?
                 //fotografia.setImageURI(image?.toUri())
                 bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
                 if (gamma.text != null) {
-                    if(parseInt(gamma.text.toString()) in 0..48){
+                    if (parseInt(gamma.text.toString()) in 0..48) {
                         cambio = efecto.Gamma(bitmap, (gamma.text.toString().toDouble()))
-                    }else
-                    {
+                    } else {
                         cambio = efecto.Gamma(bitmap, 3.0)
                     }
                 } else {
@@ -330,7 +363,7 @@ class MainActivity2 : AppCompatActivity() {
 
         filtro.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
             //fotografia.setImageURI(image?.toUri())
-            var cambio : Bitmap
+            var cambio: Bitmap
             bitmap = (fotografia.getDrawable() as BitmapDrawable).bitmap
             if (i == R.id.Rojo) {
                 cambio = efecto.Filtro(bitmap, 1)
